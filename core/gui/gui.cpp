@@ -1,6 +1,7 @@
 #include "gui.hpp"
 #include "renderer/renderer.hpp"
 #include "../input/input.hpp"
+#include "../config.hpp"
 
 #define ASSERT(x) \
 if (!(x)) \
@@ -74,7 +75,7 @@ namespace gui {
 
 		// calculate positions
 		int nOffsetX;
-		nOffsetX = 40 + (60 * nTimes);
+		nOffsetX = 30 + ((50 + config::gui::keySpacing) * nTimes);
 
 		// begin drawing the key square
 		if (key.bHeld)
@@ -83,7 +84,7 @@ namespace gui {
 		renderer::drawRectOutline(nOffsetX, 400, 50, 50, 0, 5, 0xFFFFFFFF);
 
 		// draw the text
-		fonts.tahoma->DrawChar(nOffsetX + 25, 400 + 25, 24, 0xFFFFFFFF, key.cKey);
+		fonts.tahoma->DrawChar(nOffsetX + 25, 400 + 25, 24, 0xFFFFFFFF, config::gui::forceUppercase ? toupper(key.cKey) : key.cKey);
 	}
 
 	void drawOverlay() {
