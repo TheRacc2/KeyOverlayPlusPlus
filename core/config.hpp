@@ -10,7 +10,7 @@ namespace config {
 		int nFillColor = 0xB9B4B4B4;
 
 		int nScrollSpeed = 400;
-		int nFadeDistance = 100;
+		int nFadeDistance = 200;
 
 		bool bForceUppercase = true;
 		bool bIsVertical = false;

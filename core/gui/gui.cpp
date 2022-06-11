@@ -3,6 +3,8 @@
 #include "../input/input.hpp"
 #include "../config.hpp"
 
+#include <iostream>
+
 #define ASSERT(x) \
 if (!(x)) \
 throw std::exception(#x)
@@ -97,7 +99,19 @@ namespace gui {
 		
 		// draw history
 		for (CKeyInput& input : key.deqKeyHistory) {
-			renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, config::gui::nFillColor);
+			// fade
+			int nDistanceFromFade = config::gui::nFadeDistance - input.dStart;
+
+			int nOriginalAlpha = (config::gui::nFillColor >> 24) & 0xFF;
+			int nColor = config::gui::nFillColor;
+
+			float fScale = (float) std::clamp(nDistanceFromFade, 0, 100) / 100.f;
+			int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
+
+			nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
+			std::cout << ((nColor >> 24) & 0xFF) << std::endl;
+
+			renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, nColor);
 		}
 
 		// draw text
