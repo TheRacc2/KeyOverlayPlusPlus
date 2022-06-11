@@ -18,7 +18,7 @@ namespace config {
 
 		inline bool bForceUppercase = true;
 		inline bool bIsVertical = false;
-		inline bool bFadeOut = false;
+		inline bool bFadeOut = true;
 	}
 
 	void parse();

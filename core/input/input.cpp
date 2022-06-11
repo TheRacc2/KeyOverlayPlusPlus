@@ -5,23 +5,6 @@
 #include <iostream>
 
 namespace input {
-	void clear() {
-		COORD topLeft = { 0, 0 };
-		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-		CONSOLE_SCREEN_BUFFER_INFO screen;
-		DWORD written;
-
-		GetConsoleScreenBufferInfo(console, &screen);
-		FillConsoleOutputCharacterA(
-			console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-		);
-		FillConsoleOutputAttribute(
-			console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
-			screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-		);
-		SetConsoleCursorPosition(console, topLeft);
-	}
-
 	void configureKeys() {
 		std::cout << "Please enter the key count: ";
 		int nSize; std::cin >> nSize;
@@ -29,7 +12,7 @@ namespace input {
 
 		do {
 			// get the virtual key code, add it to the monitored list
-			clear();
+			system("cls");
 
 			std::cout << "Please enter key " << vecMonitoredKeys.size() + 1 << ": ";
 

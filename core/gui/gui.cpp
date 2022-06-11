@@ -121,7 +121,10 @@ namespace gui {
 
 		// draw text
 		char text = config::gui::bForceUppercase ? toupper(key.cKey) : key.cKey;
-		fonts.tahoma->DrawChar(nOffsetX + (config::gui::nSize / 2), 450 - (config::gui::nSize / 2), 24 * (config::gui::nSize / 50), config::gui::nOutlineColor, text);
+		if (config::gui::bIsVertical)
+			fonts.tahoma->DrawStringVertical(nOffsetX + (config::gui::nSize / 2), 450 - (config::gui::nSize / 2), 24 * (config::gui::nSize / 50), config::gui::nOutlineColor, (const char*)&text);
+		else
+			fonts.tahoma->DrawChar(nOffsetX + (config::gui::nSize / 2), 450 - (config::gui::nSize / 2), 24 * (config::gui::nSize / 50), config::gui::nOutlineColor, text);
 	}
 
 	void drawOverlay() {
