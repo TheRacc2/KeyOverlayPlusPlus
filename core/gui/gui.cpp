@@ -75,16 +75,21 @@ namespace gui {
 
 		// calculate positions
 		int nOffsetX;
-		nOffsetX = 30 + ((50 + config::gui::keySpacing) * nTimes);
+		nOffsetX = 30 + ((50 + config::gui::nKeySpacing) * nTimes);
 
 		// begin drawing the key square
 		if (key.bHeld)
-			renderer::drawRect(nOffsetX, 400, 50, 50, config::gui::fillColor);
+			renderer::drawRect(nOffsetX, 400, 50, 50, config::gui::nFillColor);
 
-		renderer::drawRectOutline(nOffsetX, 400, 50, 50, 0, 5, config::gui::outlineColor);
+		renderer::drawRectOutline(nOffsetX, 400, 50, 50, 0, 5, config::gui::nOutlineColor);
 
 		// draw the text
-		fonts.tahoma->DrawChar(nOffsetX + 25, 400 + 25, 24, config::gui::outlineColor, config::gui::forceUppercase ? toupper(key.cKey) : key.cKey);
+		char text = config::gui::bForceUppercase ? toupper(key.cKey) : key.cKey;
+
+		if (config::gui::bIsVertical)
+			fonts.tahoma->DrawStringVertical(nOffsetX + 25, 400 + 25, 24, config::gui::nOutlineColor, (const char*)&text);
+		else
+			fonts.tahoma->DrawChar(nOffsetX + 25, 400 + 25, 24, config::gui::nOutlineColor, text);
 	}
 
 	void drawOverlay() {

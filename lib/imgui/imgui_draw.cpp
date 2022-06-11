@@ -3748,7 +3748,7 @@ void ImFont::AddTextVertical(ImDrawList* drawList, const ImFont* font, float fon
         return;
 
     if (text_end == NULL)
-        text_end = text_begin + strlen(text_begin);
+        text_end = text_begin + 1;
     if (text_begin == text_end)
         return;
 
@@ -3769,7 +3769,9 @@ void ImFont::AddTextVertical(ImDrawList* drawList, const ImFont* font, float fon
         clip_rect.z = ImMin(clip_rect.z, cpu_fine_clip_rect->z);
         clip_rect.w = ImMin(clip_rect.w, cpu_fine_clip_rect->w);
     }
-    RenderTextVertical(font, drawList, font_size, pos, col, clip_rect, text_begin, text_end, wrap_width, cpu_fine_clip_rect != NULL, rotateCCW);
+    ImVec2 vecSize = CalcVerticalTextSize(text_begin, text_end);
+    ImVec2 vecPos(4 + pos.x - vecSize.x / 4, 2 + pos.y - vecSize.y / 4);
+    RenderTextVertical(font, drawList, font_size, vecPos, col, clip_rect, text_begin, text_end, wrap_width, cpu_fine_clip_rect != NULL, rotateCCW);
 }
 
 void ImFont::DrawStringVertical(int x, int y, int size, int color, const char* text, bool rotateCCW)
