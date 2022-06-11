@@ -3782,6 +3782,11 @@ void ImFont::DrawString(int x, int y, int size, int color, const char* text) {
     ImGui::GetWindowDrawList()->AddText(this, size, ImVec2(x, y), color, text);
 }
 
+void ImFont::DrawChar(int x, int y, int size, int color, const char character) {
+    const ImVec2 vecSize = CalcTextSizeA(size, FLT_MAX, 0, (const char*)&character);
+    this->RenderChar(ImGui::GetWindowDrawList(), size, ImVec2(x - (vecSize.x / 2) + 1, y - (vecSize.y / 2)), color, character);
+}
+
 // Note: as with every ImDrawList drawing function, this expects that the font atlas texture is bound.
 void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col, const ImVec4& clip_rect, const char* text_begin, const char* text_end, float wrap_width, bool cpu_fine_clip) const
 {

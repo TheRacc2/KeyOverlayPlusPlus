@@ -63,9 +63,36 @@ namespace gui {
 		return false;
 	}
 
+	void drawKeyLane(CKeyInput& key, int nTimes) {
+
+		// filter out all keys that aren't this one
+		std::vector<CKeyInput> vecThisKeyHistory;
+		for (CKeyInput& itr : input::vecKeyHistory) {
+			if (key.nKeyCode == itr.nKeyCode)
+				vecThisKeyHistory.push_back(itr);
+		}
+
+		// calculate positions
+		int nOffsetX;
+		nOffsetX = 40 + (60 * nTimes);
+
+		// begin drawing the key square
+		if (key.bHeld)
+			renderer::drawRect(nOffsetX, 400, 50, 50, 0xB9B4B4B4);
+
+		renderer::drawRectOutline(nOffsetX, 400, 50, 50, 0, 5, 0xFFFFFFFF);
+
+		// draw the text
+		fonts.tahoma->DrawChar(nOffsetX + 25, 400 + 25, 24, 0xFFFFFFFF, key.cKey);
+	}
+
 	void drawOverlay() {
 		// draw the key overlay itself
-		
+		int i = 0;
+		for (CKeyInput& key : input::vecMonitoredKeys) {
+			drawKeyLane(key, i);
+			i++;
+		}
 	}
 
 	void end() {

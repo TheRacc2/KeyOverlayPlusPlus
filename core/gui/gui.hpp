@@ -11,6 +11,7 @@
 #include "../../lib/imgui/imgui.h"
 #include "../../lib/imgui/backend/imgui_impl_glfw.h"
 #include "../../lib/imgui/backend/imgui_impl_opengl3.h"
+#include "../key.hpp"
 
 struct TFontStorage {
 	ImFont* tahoma;
@@ -24,6 +25,8 @@ namespace gui {
 	void init();
 
 	bool loop();
+
+	void drawKeyLane(CKeyInput& key, int nTimes);
 	void drawOverlay();
 
 	void end();

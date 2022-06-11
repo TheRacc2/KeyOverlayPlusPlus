@@ -2880,6 +2880,7 @@ struct ImFont
     IMGUI_API void              RenderChar(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col, ImWchar c) const;
     IMGUI_API void              RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col, const ImVec4& clip_rect, const char* text_begin, const char* text_end, float wrap_width = 0.0f, bool cpu_fine_clip = false) const;
     IMGUI_API void DrawString(int x, int y, int size, int color, const char* text);
+    IMGUI_API void DrawChar(int x, int y, int size, int color, const char character);
     IMGUI_API void DrawStringVertical(int x, int y, int size, int color, const char* text, bool rotateCCW = false);
     IMGUI_API void AddTextVertical(ImDrawList* drawList, const ImFont* font, float font_size, const ImVec2& pos, ImU32 col, const char* text_begin, const char* text_end = NULL, float wrap_width = 0.0f, const ImVec4* cpu_fine_clip_rect = NULL, bool rotateCCW = false);
     IMGUI_API void RenderTextVertical(const ImFont* font, ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col, const ImVec4& clip_rect, const char* text_begin, const char* text_end = NULL, float wrap_width = 0.0f, bool cpu_fine_clip = false, bool rotateCCW = false);
