@@ -20,5 +20,7 @@ git clone https://github.com/TheRacc2/KeyOverlayPlusPlus
 
 The first time the application is opened, it will generate a **config.json** file. All values containing "color" are **ARGB** values converted to decimal.
 
+When adding to OBS, select **Add Source->Game Capture** and click **Allow Transparency**. Simply select the window and you're good to go!
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
