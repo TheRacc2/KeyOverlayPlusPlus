@@ -1,7 +1,7 @@
 #include "gui.hpp"
 #include "renderer/renderer.hpp"
 #include "../input/input.hpp"
-#include "../config.hpp"
+#include "../config/config.hpp"
 
 #include <iostream>
 
@@ -100,18 +100,23 @@ namespace gui {
 		// draw history
 		for (CKeyInput& input : key.deqKeyHistory) {
 			// fade
-			int nDistanceFromFade = config::gui::nFadeDistance - input.dStart;
+			if (config::gui::bFadeOut) {
+				int nDistanceFromFade = config::gui::nFadeDistance - input.dStart;
 
-			int nOriginalAlpha = (config::gui::nFillColor >> 24) & 0xFF;
-			int nColor = config::gui::nFillColor;
+				int nOriginalAlpha = (config::gui::nFillColor >> 24) & 0xFF;
+				int nColor = config::gui::nFillColor;
 
-			float fScale = (float) std::clamp(nDistanceFromFade, 0, 100) / 100.f;
-			int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
+				float fScale = (float)std::clamp(nDistanceFromFade, 0, 100) / 100.f;
+				int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
 
-			nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
-			std::cout << ((nColor >> 24) & 0xFF) << std::endl;
+				nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
+				std::cout << ((nColor >> 24) & 0xFF) << std::endl;
 
-			renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, nColor);
+				renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, nColor);
+			}
+			else {
+				renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, config::gui::nFillColor);
+			}
 		}
 
 		// draw text

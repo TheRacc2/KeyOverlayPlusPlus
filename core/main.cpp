@@ -5,6 +5,7 @@
 #include "key.hpp"
 #include "gui/gui.hpp"
 #include "input/input.hpp"
+#include "config/config.hpp"
 
 void clear() {
 	COORD topLeft = { 0, 0 };
@@ -27,11 +28,13 @@ void clear() {
 int main() {
 	SetConsoleTitleA("KeyOverlay++ Backend");
 
-	std::cout << "Configurations will be added soon." << std::endl;
+	config::parse();
 	input::configureKeys();
 
 	clear();
 	
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
 	input::registerHook();
 	gui::init();
 
