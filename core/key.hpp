@@ -2,26 +2,32 @@
 #define CORE_KEY_HPP
 
 #include <Windows.h>
+#include <deque>
 
 class CKeyInput {
 public:
-	unsigned int nTimePressed; // Time (unix timestamp) when nKey was pressed
-	unsigned int nTimeReleased; // Time (unix timestamp) when nKey was released
+	double dStart, dEnd;
+};
+
+class CKey {
+public:
+	bool bWasHeld;
 	bool bHeld;
 
-	char cKey; // Display key
+	unsigned char cKey; // Display key
 	int nKeyCode; // Virtual keycode
 
-	CKeyInput(char cKey) {
+	std::deque<CKeyInput> deqKeyHistory { };
+
+	CKey(const unsigned char cKey) {
 		this->cKey = cKey;
 		this->nKeyCode = VkKeyScanExA(cKey, GetKeyboardLayout(NULL)); // get the virtual code for our char
 
+		bWasHeld = false;
 		bHeld = false;
-		nTimePressed = 0;
-		nTimeReleased = 0;
 	}
 
-	CKeyInput() {
+	CKey() {
 		// this is called by resize for whatever reason
 	}
 };

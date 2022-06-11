@@ -20,13 +20,14 @@ struct TFontStorage {
 namespace gui {
 	inline GLFWwindow* hWindow = nullptr;
 	inline TFontStorage fonts;
-	inline std::thread thread;
 
 	void init();
 
 	bool loop();
 
-	void drawKeyLane(CKeyInput& key, int nTimes);
+	void updateKeyLane(CKey& key);
+	void drawKeyLane(CKey& key, int nTimes);
+
 	void drawOverlay();
 
 	void end();

@@ -64,40 +64,55 @@ namespace gui {
 		return false;
 	}
 
-	void drawKeyLane(CKeyInput& key, int nTimes) {
+	void updateKeyLane(CKey& key) {
+		if (!key.bWasHeld && key.bHeld)
+			key.deqKeyHistory.emplace_front().dEnd = 450 - config::gui::nSize;
 
-		// filter out all keys that aren't this one
-		std::vector<CKeyInput> vecThisKeyHistory;
-		for (CKeyInput& itr : input::vecKeyHistory) {
-			if (key.nKeyCode == itr.nKeyCode)
-				vecThisKeyHistory.push_back(itr);
+		for (int i = 0; i < key.deqKeyHistory.size(); i++) {
+			CKeyInput& current = key.deqKeyHistory.at(i);
+
+			double dStepAmount = config::gui::nScrollSpeed * ImGui::GetIO().DeltaTime;
+			current.dStart -= dStepAmount;
+			current.dEnd -= dStepAmount;
+
+			if (i == 0 && key.bHeld) {
+				current.dStart = 450 - config::gui::nSize;
+			}
 		}
 
-		// calculate positions
-		int nOffsetX;
-		nOffsetX = 30 + ((50 + config::gui::nKeySpacing) * nTimes);
+		key.deqKeyHistory.erase(
+			std::remove_if(key.deqKeyHistory.begin(), key.deqKeyHistory.end(), [](const CKeyInput& in) { return in.dStart <= 0; }
+		), key.deqKeyHistory.end());
+		key.bWasHeld = key.bHeld;
+	}
 
-		// begin drawing the key square
+	void drawKeyLane(CKey& key, int nTimes) {
+		int nOffsetX = 30 + ((config::gui::nSize + config::gui::nKeySpacing) * nTimes);
+
+		// draw box
 		if (key.bHeld)
-			renderer::drawRect(nOffsetX, 400, 50, 50, config::gui::nFillColor);
+			renderer::drawRect(nOffsetX, 450 - config::gui::nSize, config::gui::nSize, config::gui::nSize, config::gui::nFillColor);
 
-		renderer::drawRectOutline(nOffsetX, 400, 50, 50, 0, 5, config::gui::nOutlineColor);
+		renderer::drawRectOutline(nOffsetX, 450 - config::gui::nSize, config::gui::nSize, config::gui::nSize, 0, 3, config::gui::nOutlineColor);
+		
+		// draw history
+		for (CKeyInput& input : key.deqKeyHistory) {
+			renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, config::gui::nFillColor);
+		}
 
-		// draw the text
+		// draw text
 		char text = config::gui::bForceUppercase ? toupper(key.cKey) : key.cKey;
-
-		if (config::gui::bIsVertical)
-			fonts.tahoma->DrawStringVertical(nOffsetX + 25, 400 + 25, 24, config::gui::nOutlineColor, (const char*)&text);
-		else
-			fonts.tahoma->DrawChar(nOffsetX + 25, 400 + 25, 24, config::gui::nOutlineColor, text);
+		fonts.tahoma->DrawChar(nOffsetX + (config::gui::nSize / 2), 450 - (config::gui::nSize / 2), 24 * (config::gui::nSize / 50), config::gui::nOutlineColor, text);
 	}
 
 	void drawOverlay() {
 		// draw the key overlay itself
-		int i = 0;
-		for (CKeyInput& key : input::vecMonitoredKeys) {
+		
+		for (int i = 0; i < input::vecMonitoredKeys.size(); i++) {
+			CKey& key = input::vecMonitoredKeys.at(i);
+
+			updateKeyLane(key);
 			drawKeyLane(key, i);
-			i++;
 		}
 	}
 

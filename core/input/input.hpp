@@ -7,8 +7,7 @@
 
 namespace input {
 	inline HHOOK pHook;
-	inline std::vector<CKeyInput> vecMonitoredKeys;
-	inline std::vector<CKeyInput> vecKeyHistory;
+	inline std::vector<CKey> vecMonitoredKeys;
 
 	void configureKeys();
 
