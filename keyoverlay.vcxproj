@@ -71,19 +71,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\code\cpp\keyoverlay\lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Program Files %28x86%29\glew-2.1.0\lib;D:\Program Files %28x86%29\freeglut\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\code\cpp\keyoverlay\lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Program Files %28x86%29\glew-2.1.0\lib;D:\Program Files %28x86%29\freeglut\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\code\cpp\keyoverlay\lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Program Files %28x86%29\glew-2.1.0\lib;D:\Program Files %28x86%29\freeglut\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\code\cpp\keyoverlay\lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)lib;D:\Program Files %28x86%29\freeglut\include;D:\Program Files %28x86%29\glew-2.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Program Files %28x86%29\glew-2.1.0\lib;D:\Program Files %28x86%29\freeglut\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

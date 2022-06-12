@@ -67,44 +67,55 @@ namespace gui {
 	}
 
 	void updateKeyLane(CKey& key) {
+		int nSize = config::file["keySize"].get<int>();
+		int nScrollSpeed = config::file["scrollSpeed"].get<int>();
+
 		if (!key.bWasHeld && key.bHeld)
-			key.deqKeyHistory.emplace_front().dEnd = 450 - config::gui::nSize;
+			key.deqKeyHistory.emplace_front().dEnd = 450 - nSize;
 
 		for (int i = 0; i < key.deqKeyHistory.size(); i++) {
 			CKeyInput& current = key.deqKeyHistory.at(i);
 
-			double dStepAmount = config::gui::nScrollSpeed * ImGui::GetIO().DeltaTime;
+			double dStepAmount = nScrollSpeed * ImGui::GetIO().DeltaTime;
 			current.dStart -= dStepAmount;
 			current.dEnd -= dStepAmount;
 
 			if (i == 0 && key.bHeld) {
-				current.dStart = 450 - config::gui::nSize;
+				current.dStart = 450 - nSize;
 			}
 		}
 
+		// remove records above the area
 		key.deqKeyHistory.erase(
 			std::remove_if(key.deqKeyHistory.begin(), key.deqKeyHistory.end(), [](const CKeyInput& in) { return in.dStart <= 0; }
 		), key.deqKeyHistory.end());
+
 		key.bWasHeld = key.bHeld;
 	}
 
 	void drawKeyLane(CKey& key, int nTimes) {
-		int nOffsetX = 30 + ((config::gui::nSize + config::gui::nKeySpacing) * nTimes);
+		int nSize = config::file["keySize"].get<int>();
+		int nFillColor = config::file["fillColor"].get<int>();
+		int nOutlineColor = config::file["outlineColor"].get<int>();
+
+		int nOffsetX = 30 + ((nSize + config::file["keySpacing"]) * nTimes);
 
 		// draw box
 		if (key.bHeld)
-			renderer::drawRect(nOffsetX, 450 - config::gui::nSize, config::gui::nSize, config::gui::nSize, config::gui::nFillColor);
+			renderer::drawRect(nOffsetX, 450 - nSize, nSize, nSize, nFillColor);
 
-		renderer::drawRectOutline(nOffsetX, 450 - config::gui::nSize, config::gui::nSize, config::gui::nSize, 0, 3, config::gui::nOutlineColor);
+		renderer::drawRectOutline(nOffsetX, 450 - nSize, nSize, nSize, 0, 3, nOutlineColor);
 		
 		// draw history
 		for (CKeyInput& input : key.deqKeyHistory) {
 			// fade
-			if (config::gui::bFadeOut) {
-				int nDistanceFromFade = config::gui::nFadeDistance - input.dStart;
+			if (config::file["fadeOut"].get<bool>()) {
+				int nFadeDistance = config::file["fadeDistance"].get<int>();
 
-				int nOriginalAlpha = (config::gui::nFillColor >> 24) & 0xFF;
-				int nColor = config::gui::nFillColor;
+				int nDistanceFromFade = nFadeDistance - input.dStart;
+
+				int nOriginalAlpha = (nFillColor >> 24) & 0xFF;
+				int nColor = nFillColor;
 
 				float fScale = (float)std::clamp(nDistanceFromFade, 0, 100) / 100.f;
 				int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
@@ -112,19 +123,19 @@ namespace gui {
 				nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
 				std::cout << ((nColor >> 24) & 0xFF) << std::endl;
 
-				renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, nColor);
+				renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nColor);
 			}
 			else {
-				renderer::drawRect(nOffsetX, input.dStart, config::gui::nSize, input.dEnd - input.dStart, config::gui::nFillColor);
+				renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nFillColor);
 			}
 		}
 
 		// draw text
-		char text = config::gui::bForceUppercase ? toupper(key.cKey) : key.cKey;
-		if (config::gui::bIsVertical)
-			fonts.tahoma->DrawStringVertical(nOffsetX + (config::gui::nSize / 2), 450 - (config::gui::nSize / 2), 24 * (config::gui::nSize / 50), config::gui::nOutlineColor, (const char*)&text);
+		char text = config::file["forceUppercase"].get<bool>() ? toupper(key.cKey) : key.cKey;
+		if (config::file["vertical"].get<bool>())
+			fonts.tahoma->DrawStringVertical(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nOutlineColor, (const char*)&text);
 		else
-			fonts.tahoma->DrawChar(nOffsetX + (config::gui::nSize / 2), 450 - (config::gui::nSize / 2), 24 * (config::gui::nSize / 50), config::gui::nOutlineColor, text);
+			fonts.tahoma->DrawChar(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nOutlineColor, text);
 	}
 
 	void drawOverlay() {

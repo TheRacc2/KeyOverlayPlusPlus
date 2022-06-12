@@ -4,7 +4,6 @@
 
 namespace config {
 	void parse() {
-		nlohmann::json file;
 		if (std::filesystem::exists("config.json")) {
 			std::ifstream stream("config.json");
 			stream >> file;
@@ -30,18 +29,5 @@ namespace config {
 			stream << file.dump(4);
 			stream.close();
 		}
-
-		gui::nKeySpacing = file["keySpacing"];
-		gui::nSize = file["keySize"];
-
-		gui::nOutlineColor = file["outlineColor"];
-		gui::nFillColor = file["fillColor"];
-
-		gui::nScrollSpeed = file["scrollSpeed"];
-		gui::nFadeDistance = file["fadeDistance"];
-		
-		gui::bForceUppercase = file["forceUppercase"];
-		gui::bIsVertical = file["vertical"];
-		gui::bFadeOut = file["fadeOut"];
 	}
 }
