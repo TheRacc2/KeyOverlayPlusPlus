@@ -7,7 +7,6 @@ KeyOverlay++ is a C++ Keyboard Overlay, using [ImGui](https://github.com/ocornut
 
 Once downloaded from the [releases](https://github.com/TheRacc2/KeyOverlayPlusPlus/releases/tag/v1.0) page, it's as simple as doubleclicking!
 
-
 ## Source Code
 
 This project is open source, free to use and modify.
@@ -15,6 +14,8 @@ This project is open source, free to use and modify.
 ```bash
 git clone https://github.com/TheRacc2/KeyOverlayPlusPlus
 ```
+
+**You will need to modify the *freeglut* and *glew* paths in Visual Studio**
 
 ## Usage
 
