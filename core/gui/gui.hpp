@@ -13,13 +13,9 @@
 #include "../../lib/imgui/backend/imgui_impl_opengl3.h"
 #include "../key.hpp"
 
-struct TFontStorage {
-	ImFont* tahoma;
-};
-
 namespace gui {
 	inline GLFWwindow* hWindow = nullptr;
-	inline TFontStorage fonts;
+	inline ImFont* pFont;
 
 	void init();
 

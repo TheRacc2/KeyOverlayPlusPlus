@@ -1,19 +1,23 @@
 #include "dialog.hpp"
 #include "../input/input.hpp"
+#include "../assert.hpp"
 
 #include <iostream>
 
 namespace dialog {
-	void clearConsole() { // https://stackoverflow.com/questions/6486289/how-can-i-clear-console, the proper way
+	void clearConsole() { // https://stackoverflow.com/questions/6486289/how-can-i-clear-console the proper way
 		COORD topLeft = { 0, 0 };
+
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		ASSERT(hConsole);
+
 		CONSOLE_SCREEN_BUFFER_INFO screen;
 		DWORD dwWritten;
 
-		GetConsoleScreenBufferInfo(hConsole, &screen);
-		FillConsoleOutputCharacterA(hConsole, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &dwWritten);
-		FillConsoleOutputAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &dwWritten);
-		SetConsoleCursorPosition(hConsole, topLeft);
+		ASSERT(GetConsoleScreenBufferInfo(hConsole, &screen));
+		ASSERT(FillConsoleOutputCharacterA(hConsole, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &dwWritten));
+		ASSERT(FillConsoleOutputAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &dwWritten));
+		ASSERT(SetConsoleCursorPosition(hConsole, topLeft));
 	}
 
 	void configureKeys() {
@@ -23,7 +27,10 @@ namespace dialog {
 		std::getline(std::cin, strSize);
 		int nSize = std::stoi(strSize);
 
-		input::vecMonitoredKeys.resize(nSize); input::vecMonitoredKeys.clear();
+		ASSERT(nSize);
+
+		input::vecMonitoredKeys.resize(nSize);
+		input::vecMonitoredKeys.clear();
 
 		do {
 			// get the virtual key code, add it to the monitored list

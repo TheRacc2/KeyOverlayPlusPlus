@@ -21,7 +21,10 @@ public:
 
 	CKey(const unsigned char cKey) {
 		this->cKey = cKey;
-		this->nKeyCode = VkKeyScanExA(cKey, GetKeyboardLayout(NULL)); // get the virtual code for our char
+
+		nKeyCode = VkKeyScanExA(cKey, GetKeyboardLayout(NULL)); // get the virtual code for our char
+		if (nKeyCode == -1)
+			throw std::exception("Failed to translate cKey into a Virtual-Key!");
 
 		bWasHeld = false;
 		bHeld = false;

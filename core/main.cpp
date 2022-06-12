@@ -10,21 +10,29 @@
 
 
 int main() {
-	SetConsoleTitleA("KeyOverlay++ Backend");
+	try {
+		SetConsoleTitleA("KeyOverlay++ Backend");
 
-	config::parse();
-	dialog::configureKeys();
-	
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
+		config::parse();
+		dialog::configureKeys();
 
-	input::registerHook();
-	gui::init();
+		ShowWindow(GetConsoleWindow(), SW_HIDE);
 
-	bool bClose = false;
-	do {
-		bClose = gui::loop();
-	} while (!bClose); // wait until the window is closed
+		input::registerHook();
+		gui::init();
 
-	gui::end();
-	input::removeHook();
+		bool bClose = false;
+		do {
+			bClose = gui::loop();
+		} while (!bClose); // wait until the window is closed
+
+		gui::end();
+		input::removeHook();
+
+		return EXIT_SUCCESS;
+	}
+	catch (const std::exception& ex) {
+		MessageBoxA(nullptr, ex.what(), "KeyOverlay++ | Error", MB_OK);
+		return EXIT_FAILURE;
+	}
 }

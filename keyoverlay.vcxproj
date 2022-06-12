@@ -166,6 +166,7 @@
     <ClCompile Include="core\gui\renderer\renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core\assert.hpp" />
     <ClInclude Include="core\config\config.hpp" />
     <ClInclude Include="core\key.hpp" />
     <ClInclude Include="core\gui\gui.hpp" />

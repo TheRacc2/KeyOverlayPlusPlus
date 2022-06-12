@@ -11,18 +11,31 @@ namespace config {
 		}
 		else {
 			file = {
-				{ "keySpacing", 10 },
-				{ "keySize", 50 },
+				{ "keyBox", {
+					{ "spacing", 10 },
+					{ "size", 50 },
+					{ "outlineThickness", 3 }
+				}},
 
-				{ "outlineColor", 0xFFFFFFFF },
-				{ "fillColor", 0xB9B4B4B4 },
+				{ "text", {
+					{ "forceUppercase", true },
+					{ "vertical", false },
+					{ "font", R"(C:\Windows\Fonts\Tahoma.ttf)"}
+				}},
 
-				{ "scrollSpeed", 400 },
-				{ "fadeDistance", 100 },
+				{ "colors", {
+					{ "outline", 0xFFFFFFFF },
+					{ "fill", 0xB9B4B4B4 },
+					{ "history", 0xB9B4B4B4 },
+					{ "text", 0xFFFFFFFF }
+				}},
 
-				{ "forceUppercase", true },
-				{ "vertical", false },
-				{ "fadeOut", true }
+				{ "history", {
+					{ "enabled", true }, 
+					{ "scrollSpeed", 400 },
+					{ "fadeDistance", 100 },
+					{ "fadeOut", true }
+				}},
 			};
 
 			std::ofstream stream("config.json");

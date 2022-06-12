@@ -32,7 +32,9 @@ namespace gui {
 		ImGui::GetIO().IniFilename = NULL;
 
 		ImGuiIO* io = &ImGui::GetIO();
-		fonts.tahoma = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Tahoma.ttf", 64);
+
+		std::string strFontPath = config::file["text"]["font"].get<std::string>();
+		pFont = io->Fonts->AddFontFromFileTTF(R"(C:\Windows\Fonts\Tahoma.ttf)", 64);
 	}
 
 	bool loop() {
@@ -67,8 +69,8 @@ namespace gui {
 	}
 
 	void updateKeyLane(CKey& key) {
-		int nSize = config::file["keySize"].get<int>();
-		int nScrollSpeed = config::file["scrollSpeed"].get<int>();
+		int nSize = config::file["keyBox"]["size"].get<int>();
+		int nScrollSpeed = config::file["history"]["scrollSpeed"].get<int>();
 
 		if (!key.bWasHeld && key.bHeld)
 			key.deqKeyHistory.emplace_front().dEnd = 450 - nSize;
@@ -94,48 +96,53 @@ namespace gui {
 	}
 
 	void drawKeyLane(CKey& key, int nTimes) {
-		int nSize = config::file["keySize"].get<int>();
-		int nFillColor = config::file["fillColor"].get<int>();
-		int nOutlineColor = config::file["outlineColor"].get<int>();
+		int nSize = config::file["keyBox"]["size"].get<int>();
 
-		int nOffsetX = 30 + ((nSize + config::file["keySpacing"]) * nTimes);
+		int nFillColor = config::file["colors"]["fill"].get<int>();
+		int nHistoryColor = config::file["colors"]["history"].get<int>();
+		int nOutlineColor = config::file["colors"]["outline"].get<int>();
+		int nTextColor = config::file["colors"]["text"].get<int>();
+
+		int nOffsetX = 30 + ((nSize + config::file["keyBox"]["spacing"]) * nTimes);
 
 		// draw box
 		if (key.bHeld)
 			renderer::drawRect(nOffsetX, 450 - nSize, nSize, nSize, nFillColor);
 
-		renderer::drawRectOutline(nOffsetX, 450 - nSize, nSize, nSize, 0, 3, nOutlineColor);
+		renderer::drawRectOutline(nOffsetX, 450 - nSize, nSize, nSize, 0, config::file["keyBox"]["outlineThickness"].get<int>(), nOutlineColor);
 		
 		// draw history
-		for (CKeyInput& input : key.deqKeyHistory) {
-			// fade
-			if (config::file["fadeOut"].get<bool>()) {
-				int nFadeDistance = config::file["fadeDistance"].get<int>();
+		if (config::file["history"]["enabled"].get<bool>()) {
+			for (CKeyInput& input : key.deqKeyHistory) {
+				// fade
+				if (config::file["history"]["fadeOut"].get<bool>()) {
+					int nFadeDistance = config::file["history"]["fadeDistance"].get<int>();
 
-				int nDistanceFromFade = nFadeDistance - input.dStart;
+					int nDistanceFromFade = nFadeDistance - input.dStart;
 
-				int nOriginalAlpha = (nFillColor >> 24) & 0xFF;
-				int nColor = nFillColor;
+					int nOriginalAlpha = (nHistoryColor >> 24) & 0xFF;
+					int nColor = nHistoryColor;
 
-				float fScale = (float)std::clamp(nDistanceFromFade, 0, 100) / 100.f;
-				int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
+					float fScale = (float)std::clamp(nDistanceFromFade, 0, 100) / 100.f;
+					int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
 
-				nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
-				std::cout << ((nColor >> 24) & 0xFF) << std::endl;
+					nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
+					std::cout << ((nColor >> 24) & 0xFF) << std::endl;
 
-				renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nColor);
-			}
-			else {
-				renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nFillColor);
+					renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nColor);
+				}
+				else {
+					renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nHistoryColor);
+				}
 			}
 		}
 
 		// draw text
-		char text = config::file["forceUppercase"].get<bool>() ? toupper(key.cKey) : key.cKey;
-		if (config::file["vertical"].get<bool>())
-			fonts.tahoma->DrawStringVertical(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nOutlineColor, (const char*)&text);
+		char text = config::file["text"]["forceUppercase"].get<bool>() ? toupper(key.cKey) : key.cKey;
+		if (config::file["text"]["vertical"].get<bool>())
+			pFont->DrawStringVertical(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nTextColor, (const char*)&text);
 		else
-			fonts.tahoma->DrawChar(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nOutlineColor, text);
+			pFont->DrawChar(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nTextColor, text);
 	}
 
 	void drawOverlay() {
