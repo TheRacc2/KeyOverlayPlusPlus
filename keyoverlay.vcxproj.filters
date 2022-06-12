@@ -51,6 +51,9 @@
     <ClCompile Include="core\config\config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="core\dialog\dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\key.hpp">
@@ -216,6 +219,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\nlohmann\ordered_map.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\dialog\dialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,24 +5,6 @@
 #include <iostream>
 
 namespace input {
-	void configureKeys() {
-		std::cout << "Please enter the key count: ";
-		int nSize; std::cin >> nSize;
-		vecMonitoredKeys.resize(nSize); vecMonitoredKeys.clear();
-
-		do {
-			// get the virtual key code, add it to the monitored list
-			system("cls");
-
-			std::cout << "Please enter key " << vecMonitoredKeys.size() + 1 << ": ";
-
-			char cInput;
-			std::cin >> cInput;
-			vecMonitoredKeys.emplace_back(cInput);
-
-		} while (vecMonitoredKeys.size() != nSize);
-	}
-
 	LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
 		if (nCode == HC_ACTION) {
 			PKBDLLHOOKSTRUCT pEvent = (PKBDLLHOOKSTRUCT) lParam;

@@ -6,13 +6,14 @@
 #include "gui/gui.hpp"
 #include "input/input.hpp"
 #include "config/config.hpp"
+#include "dialog/dialog.hpp"
 
 
 int main() {
 	SetConsoleTitleA("KeyOverlay++ Backend");
 
 	config::parse();
-	input::configureKeys();
+	dialog::configureKeys();
 	
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 

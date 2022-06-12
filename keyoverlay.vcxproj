@@ -155,6 +155,7 @@
     <ClCompile Include="core\gui\gui.cpp" />
     <ClCompile Include="core\main.cpp" />
     <ClCompile Include="core\input\input.cpp" />
+    <ClCompile Include="core\dialog\dialog.cpp" />
     <ClCompile Include="lib\imgui\backend\imgui_impl_glfw.cpp" />
     <ClCompile Include="lib\imgui\backend\imgui_impl_opengl3.cpp" />
     <ClCompile Include="lib\imgui\imgui.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="core\key.hpp" />
     <ClInclude Include="core\gui\gui.hpp" />
     <ClInclude Include="core\input\input.hpp" />
+    <ClInclude Include="core\dialog\dialog.hpp" />
     <ClInclude Include="lib\imgui\backend\imgui_impl_glfw.h" />
     <ClInclude Include="lib\imgui\backend\imgui_impl_opengl3.h" />
     <ClInclude Include="lib\imgui\backend\imgui_impl_opengl3_loader.h" />

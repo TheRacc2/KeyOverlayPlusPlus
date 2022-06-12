@@ -9,8 +9,6 @@ namespace input {
 	inline HHOOK pHook;
 	inline std::vector<CKey> vecMonitoredKeys;
 
-	void configureKeys();
-
 	void registerHook();
 	void removeHook();
 
