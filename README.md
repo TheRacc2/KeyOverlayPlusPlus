@@ -5,7 +5,7 @@ KeyOverlay++ is a C++ Keyboard Overlay, using [ImGui](https://github.com/ocornut
 ![In Action](https://github.com/TheRacc2/KeyOverlayPlusPlus/blob/main/example.gif)
 ## Installation
 
-Once downloaded from the [releases](https://github.com/TheRacc2/KeyOverlayPlusPlus/releases/tag/v1.0) page, it's as simple as doubleclicking!
+Once downloaded from the [releases](https://github.com/TheRacc2/KeyOverlayPlusPlus/releases/) page, it's as simple as doubleclicking!
 
 ## Source Code
 
