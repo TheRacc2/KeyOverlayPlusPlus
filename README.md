@@ -31,3 +31,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Credits
 A large portion of the logic codebase for KeyOverlay++ was kindly contributed by [Lexika](https://github.com/lexika979).
+The design was copied from [Blondazz's KeyOverlay](https://github.com/Blondazz/KeyOverlay). (Blondazz, if you would like me to change it, please make an issue and I will)
