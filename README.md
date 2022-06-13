@@ -21,6 +21,8 @@ git clone https://github.com/TheRacc2/KeyOverlayPlusPlus
 
 The first time the application is opened, it will generate a **config.json** file. All values containing "color" are **Hexacedimal RGBA** values converted to decimal.
 
+** font ** path is absolute. Make sure you include the ** whole path **!
+
 When adding to OBS, select **Add Source->Game Capture** and click **Allow Transparency**. Simply select the window and you're good to go!
 
 ## Contributing
