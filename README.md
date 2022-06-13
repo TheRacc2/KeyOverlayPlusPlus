@@ -25,3 +25,6 @@ When adding to OBS, select **Add Source->Game Capture** and click **Allow Transp
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## Credits
+A large portion of the logic codebase for KeyOverlay++ was kindly contributed by @lexika979
