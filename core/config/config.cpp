@@ -1,6 +1,7 @@
 #include "config.hpp"
 
 #include <fstream>
+#include <string>
 
 namespace config {
 	void parse() {
@@ -8,6 +9,25 @@ namespace config {
 			std::ifstream stream("config.json");
 			stream >> file;
 			stream.close();
+
+			for (auto& itr : file["colors"]) { // convert hex to decimal
+				std::string hex = itr.get<std::string>();
+
+				if (hex.starts_with("#"))
+					hex = hex.substr(1);
+
+				if (hex.starts_with("0x"))
+					hex = hex.substr(2);
+
+				if (!(hex.length() > 6)) // does it have alpha?
+					hex += "FF";
+
+				for (int i = 0; i < hex.length(); i++)
+					hex[i] = toupper(hex[i]);
+
+				unsigned int decimal = std::stoul(hex, nullptr, 16);
+				itr = decimal;
+			}
 		}
 		else {
 			file = {
@@ -24,10 +44,10 @@ namespace config {
 				}},
 
 				{ "colors", {
-					{ "outline", 0xFFFFFFFF },
-					{ "fill", 0xB4B4B4B9 },
-					{ "history", 0xB4B4B4B9 },
-					{ "text", 0xFFFFFFFF }
+					{ "outline", "#FFFFFFFF" },
+					{ "fill", "#B4B4B4B9" },
+					{ "history", "#B4B4B4B9" },
+					{ "text", "#FFFFFFFF" }
 				}},
 
 				{ "history", {
