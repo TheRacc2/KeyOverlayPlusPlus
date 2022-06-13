@@ -25,8 +25,8 @@ namespace config {
 
 				{ "colors", {
 					{ "outline", 0xFFFFFFFF },
-					{ "fill", 0xB9B4B4B4 },
-					{ "history", 0xB9B4B4B4 },
+					{ "fill", 0xB4B4B4B9 },
+					{ "history", 0xB4B4B4B9 },
 					{ "text", 0xFFFFFFFF }
 				}},
 

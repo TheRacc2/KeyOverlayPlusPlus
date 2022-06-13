@@ -16,7 +16,9 @@ int main() {
 		config::parse();
 		dialog::configureKeys();
 
+#ifndef _DEBUG // doing this in debug breaks visual studio for some reason
 		ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 
 		input::registerHook();
 		gui::init();

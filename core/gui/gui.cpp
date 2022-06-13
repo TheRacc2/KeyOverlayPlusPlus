@@ -34,7 +34,7 @@ namespace gui {
 		ImGuiIO* io = &ImGui::GetIO();
 
 		std::string strFontPath = config::file["text"]["font"].get<std::string>();
-		pFont = io->Fonts->AddFontFromFileTTF(R"(C:\Windows\Fonts\Tahoma.ttf)", 64);
+		pFont = io->Fonts->AddFontFromFileTTF(strFontPath.c_str(), 64);
 	}
 
 	bool loop() {
@@ -83,7 +83,7 @@ namespace gui {
 			current.dEnd -= dStepAmount;
 
 			if (i == 0 && key.bHeld) {
-				current.dStart = 450 - nSize;
+				current.dStart = 450 - nSize - (config::file["keyBox"]["outlineThickness"].get<int>() / 2);
 			}
 		}
 
@@ -111,6 +111,13 @@ namespace gui {
 
 		renderer::drawRectOutline(nOffsetX, 450 - nSize, nSize, nSize, 0, config::file["keyBox"]["outlineThickness"].get<int>(), nOutlineColor);
 		
+		// draw text, see https://www.youtube.com/watch?v=ikMx42YRUjM for why im doing this before history
+		char text = config::file["text"]["forceUppercase"].get<bool>() ? toupper(key.cKey) : key.cKey;
+		if (config::file["text"]["vertical"].get<bool>())
+			pFont->DrawStringVertical(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nTextColor, (const char*)&text);
+		else
+			pFont->DrawChar(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nTextColor, text);
+
 		// draw history
 		if (config::file["history"]["enabled"].get<bool>()) {
 			for (CKeyInput& input : key.deqKeyHistory) {
@@ -118,31 +125,37 @@ namespace gui {
 				if (config::file["history"]["fadeOut"].get<bool>()) {
 					int nFadeDistance = config::file["history"]["fadeDistance"].get<int>();
 
-					int nDistanceFromFade = nFadeDistance - input.dStart;
+					int nDistanceFromFade = nFadeDistance - input.dEnd;
 
-					int nOriginalAlpha = (nHistoryColor >> 24) & 0xFF;
-					int nColor = nHistoryColor;
+					// we're going to draw a vertical gradient that gets clipped out
+					// as the record climbs upwards, making a "fade out" animation
+					
+					// calculate the fade threshold
+					int nCappedEnd = std::max(nFadeDistance, (int) input.dEnd);
+					int nCappedStart = std::max(nFadeDistance, (int)input.dStart);
 
-					float fScale = (float)std::clamp(nDistanceFromFade, 0, 100) / 100.f;
-					int nNewAlpha = (int)nOriginalAlpha * (1 - fScale);
+					renderer::drawRect(nOffsetX, nCappedStart, nSize, nCappedEnd - nCappedStart, nHistoryColor);
+					
+					// calculate the amount over fade threshold
+					int nAmountOverEnd = std::max(0, (int) -(input.dEnd - nFadeDistance));
+					int nAmountOverStart = std::max(0, (int) -(input.dStart - nFadeDistance));
 
-					nColor = nNewAlpha << 24 | ((nColor >> 16) & 0xFF) << 16 | ((nColor >> 8) & 0xFF) << 8 | nColor & 0xFF;
-					std::cout << ((nColor >> 24) & 0xFF) << std::endl;
-
-					renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nColor);
+					int nHeight = -nAmountOverEnd + nAmountOverStart;
+					if (nHeight < -100) // std clamp doesnt like negative numbers sometimes
+						nHeight = -100;
+					
+					// clip bottom part of gradient, otherwise it looks weird
+					ImGui::PushClipRect(ImVec2(nOffsetX, input.dEnd), ImVec2(nOffsetX + nSize, input.dEnd + (input.dStart - input.dEnd)), false);
+					
+					renderer::drawGradientVertical(nOffsetX, nFadeDistance, nSize, nHeight, 0x00000000, nHistoryColor);
+					
+					ImGui::PopClipRect();
 				}
 				else {
 					renderer::drawRect(nOffsetX, input.dStart, nSize, input.dEnd - input.dStart, nHistoryColor);
 				}
 			}
 		}
-
-		// draw text
-		char text = config::file["text"]["forceUppercase"].get<bool>() ? toupper(key.cKey) : key.cKey;
-		if (config::file["text"]["vertical"].get<bool>())
-			pFont->DrawStringVertical(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nTextColor, (const char*)&text);
-		else
-			pFont->DrawChar(nOffsetX + (nSize / 2), 450 - (nSize / 2), 24 * (nSize / 50), nTextColor, text);
 	}
 
 	void drawOverlay() {
