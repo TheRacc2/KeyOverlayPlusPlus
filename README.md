@@ -22,7 +22,7 @@ git clone https://github.com/TheRacc2/KeyOverlayPlusPlus
 The first time the application is opened, it will generate a **config.json** file. All values in section *color* are **Hexacedimal RGBA** values, stored like **#RRGGBBAA** or **0xRRGGBBAA**.
 The program will automatically include maximum alpha for any hex color without alpha.
 
-**font** path is absolute. Make sure you include the **whole path**!
+**font** path is absolute. Make sure you include the **whole path** and use \\\ instead of \\!
 
 When adding to OBS, select **Add Source->Game Capture** and click **Allow Transparency**. Simply select the window and you're good to go!
 
